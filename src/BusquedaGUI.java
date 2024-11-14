@@ -8,21 +8,33 @@ public class BusquedaGUI {
     private JButton AGREGARButton;
     private JButton BUSCARButton;
     private JPanel pGeneral;
+    private JTextArea textArea1;
     private ArrayList<Integer> valores = new ArrayList<>();
 
+    private void actualizarTextArea() {
+        StringBuilder listaValores = new StringBuilder();
+        for (Integer valor : valores) {
+            listaValores.append(valor).append("\n");
+        }
+        textArea1.setText(listaValores.toString());
+    }
     public BusquedaGUI() {
         AGREGARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int valor = Integer.parseInt(textField1.getText());
-                    valores.add(valor);
-                    textField1.setText(""); // Limpiar el campo después de agregar
-                    JOptionPane.showMessageDialog(null, "Valor agregado: " + valor);
+                    if (valores.contains(valor)) { // Verifica si el valor ya está en la lista
+                        JOptionPane.showMessageDialog(null, "El valor ya ha sido ingresado.");
+                    } else {
+                        valores.add(valor);
+                        textField1.setText(""); // Limpiar el campo después de agregar
+                        actualizarTextArea(); // Actualizar el TextArea con los valores actuales
+                        JOptionPane.showMessageDialog(null, "Valor agregado: " + valor);
+                    }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Ingrese un valor válido.");
+                    JOptionPane.showMessageDialog(null, "Ingrese un número válido.");
                 }
-
             }
         });
         BUSCARButton.addActionListener(new ActionListener() {
@@ -39,10 +51,8 @@ public class BusquedaGUI {
                         JOptionPane.showMessageDialog(null, "El valor " + valor + " no se encuentra en el array.");
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Ingrese un valor válido!.");
+                    JOptionPane.showMessageDialog(null, "Ingrese un número válido.");
                 }
-
-
             }
         });
     }
